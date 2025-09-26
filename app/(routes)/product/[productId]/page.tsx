@@ -6,15 +6,16 @@ import Container from "@/components/ui/container";
 import Info from "@/components/info";
 
 interface ProductPageProps {
-    params: {
+    params: Promise<{
         productId: string;
-    }
+    }>
 }
 
 const ProductPage: React.FC<ProductPageProps> = async ({
     params
 }) => {
-    const product = await getProduct(params.productId);
+    const resolvedParams = await params;
+    const product = await getProduct(resolvedParams.productId);
     const suggestedProducts = await getProducts({
         categoryId: product?.category?.id
     })
